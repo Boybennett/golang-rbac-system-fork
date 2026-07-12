@@ -12,5 +12,4 @@ func SetupRoutes(db *pgxpool.Pool, app *gin.Engine) {
 	authService := auth.NewService(authRepository)
 	authHandlers := auth.NewHandler(authService)
 	app.POST("/auth/register", authHandlers.RegisterUser)
-	// app.POST("/auth/login", authHandlers.LoginUser)
 }

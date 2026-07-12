@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-
 	"github.com/Steve-s-Circle-on-System-Design/golang-rbac-system/internal/initializers"
 	"github.com/Steve-s-Circle-on-System-Design/golang-rbac-system/internal/routes"
 	"github.com/gin-gonic/gin"
@@ -18,7 +17,7 @@ func main() {
 	err := initializers.LoadConfig()
 	if err != nil {
 		log.Println("Failed to load config", err.Error())
-		return 
+		return
 	}
 	PORT := ":" + os.Getenv("PORT")
 	addr := PORT
@@ -31,8 +30,8 @@ func main() {
 	err = pool.Ping(ctx)
 	if err != nil {
 		log.Println("Database is unreachable or offline:", err.Error())
-		pool.Close() 
-		return 
+		pool.Close()
+		return
 	}
 
 	routes.SetupRoutes(pool, router)

@@ -27,7 +27,7 @@ func (h *Handler) RegisterUser(c *gin.Context) {
 
 	err := h.authService.RegisterWithPassword(c, input.Email, input.Password)
 	if err != nil {
-		log.Println("Error occured while trying to register user:", err)
+		log.Println("Error occurred while trying to register user:", err)
 
 		if errors.Is(err, ErrUserWithEmailAlreadyExists) {
 			c.JSON(http.StatusConflict, gin.H{
@@ -43,10 +43,6 @@ func (h *Handler) RegisterUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
-		"message": "User registered successfullly",
+		"message": "User registered successfully",
 	})
-}
-
-func (h *Handler) LoginUser(c *gin.Context) {
-
 }

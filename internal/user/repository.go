@@ -44,22 +44,22 @@ func (r *userRepository) Create(ctx context.Context, u *User) error {
 
 func (r *userRepository) FindByEmail(ctx context.Context, email string) (*User, error) {
 	row := r.db.QueryRow(
-        ctx,
-        `SELECT email, password_hash
+		ctx,
+		`SELECT email, password_hash
          FROM users
          WHERE email = $1`,
-        email,
-    )
+		email,
+	)
 
-    var u User
+	var u User
 
-    err := row.Scan(
-        &u.Email,
-        &u.PasswordHash,
-    )
-    if err != nil {
-        return nil, err
-    }
+	err := row.Scan(
+		&u.Email,
+		&u.PasswordHash,
+	)
+	if err != nil {
+		return nil, err
+	}
 
-    return &u, nil
+	return &u, nil
 }

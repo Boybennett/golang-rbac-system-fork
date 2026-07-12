@@ -10,16 +10,19 @@ const (
 )
 
 type User struct {
-	ID               string
-	FirstName		 string
-	LastName		 string
-	Email            string
-	PasswordHash     string // empty if OAuth-only account
-	Role             Role
-	IsEmailVerified  bool
-	AvatarUrl		 string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+
+	ID           string
+	FirstName    string
+	LastName     string
+	Email        string
+	PasswordHash string
+	AvatarUrl    string
+	Role         Role
+
+	LockedUntil *time.Time
+
 	FailedLoginCount int
-	LockedUntil      *time.Time
-	CreatedAt        time.Time
-	UpdatedAt        time.Time
+	IsEmailVerified  bool
 }

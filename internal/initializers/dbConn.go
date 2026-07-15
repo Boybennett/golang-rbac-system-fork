@@ -18,7 +18,7 @@ func ConnectToDB(ctx context.Context) (*pgxpool.Pool, error) {
 	DB_URL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
 	pool, err := pgxpool.New(ctx, DB_URL)
 	if err != nil {
-		log.Printf("Failed to log in to the db:  %q\n", err.Error())
+		log.Printf("Failed to log in to the db: %q\n", err.Error()) // #nosec G706
 		return nil, err
 	}
 	return pool, nil

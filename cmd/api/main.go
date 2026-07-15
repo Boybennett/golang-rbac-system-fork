@@ -39,7 +39,7 @@ func main() {
 	routes.SetupRoutes(pool, router)
 
 	log.Println("Successfully connected to the database")
-	log.Printf("server listening on: %q", addr)
+	log.Printf("server listening on: %q\n", addr) // #nosec G706
 
 	if err := router.Run(addr); err != nil {
 		log.Fatalf("server failed: %v", err)

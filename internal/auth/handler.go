@@ -69,7 +69,7 @@ func (h *Handler) LoginUser(c *gin.Context) {
 		return
 	}
 
-	//setting refresh token in httponly cookie
+	// Setting refresh token in httponly cookie
 	c.SetCookie("refresh_token", pair.RefreshToken, 604800, "/", "", false, true)
 
 	c.JSON(http.StatusOK, gin.H{

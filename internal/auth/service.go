@@ -24,7 +24,7 @@ var (
 type TokenPair struct {
 	AccessToken  string
 	RefreshToken string
-	ExpiresIn    int64 //life span of access token
+	ExpiresIn    int64 // Life span of access token
 }
 
 type Service interface {
@@ -39,9 +39,9 @@ type authService struct {
 	jwtUtil    *JWTUtil
 }
 
-func NewService(Repository *Repository, jwtUtil *JWTUtil) Service {
+func NewService(repository *Repository, jwtUtil *JWTUtil) Service {
 	return &authService{
-		Repository: Repository,
+		Repository: repository,
 		jwtUtil:    jwtUtil,
 	}
 }
@@ -83,7 +83,8 @@ func (s *authService) LoginWithPassword(ctx context.Context, email, password str
 		return nil, err
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(existingUser.PasswordHash), []byte(password)); err != nil {
+	err = bcrypt.CompareHashAndPassword([]byte(existingUser.PasswordHash), []byte(password))
+	if err != nil {
 		return nil, ErrPasswordMismatchDuringLogin
 	}
 
@@ -147,7 +148,7 @@ func (s *authService) RefreshTokens(ctx context.Context, rawRefreshToken string)
 		return nil, err
 	}
 
-	//if there's a breach revoke all tokens for the user
+	// If there's a breach revoke all tokens for the user
 	if token.IsRevoked {
 		_ = s.Repository.RevokeAllRefreshTokensForUser(ctx, token.UserID)
 		return nil, ErrRefreshTokenReuse

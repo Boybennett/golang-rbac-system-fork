@@ -21,6 +21,7 @@ var (
 // claims inserted in a short lived access token
 type AccessTokenClaims struct {
 	jwt.RegisteredClaims
+
 	UserID uuid.UUID `json:"uuid"`
 	Role   string    `json:"role"`
 }
@@ -120,7 +121,6 @@ func (j *JWTUtil) ValidateAccessToken(tokenStr string) (*AccessTokenClaims, erro
 		jwt.WithValidMethods([]string{"HS256"}),
 		jwt.WithIssuedAt(),
 	)
-
 	if err != nil {
 		switch {
 		case errors.Is(err, jwt.ErrTokenExpired):

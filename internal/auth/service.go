@@ -16,9 +16,9 @@ var (
 	ErrUserWithEmailAlreadyExists  = errors.New("user with that email already exists")
 	ErrNonExistentUser             = errors.New("user doesn't exist with that email")
 	ErrPasswordMismatchDuringLogin = errors.New("invalid password")
-	ErrRefreshTokenInvalid         = errors.New("Refresh token is invalid")
-	ErrRefreshTokenExpired         = errors.New("Refresh token has expired")
-	ErrRefreshTokenReuse           = errors.New("Refresh token reuse detected — all sessions have been terminated")
+	ErrRefreshTokenInvalid         = errors.New("refresh token is invalid")
+	ErrRefreshTokenExpired         = errors.New("refresh token has expired")
+	ErrRefreshTokenReuse           = errors.New("refresh token reuse detected — all sessions have been terminated")
 )
 
 type TokenPair struct {
@@ -164,7 +164,8 @@ func (s *authService) RefreshTokens(ctx context.Context, rawRefreshToken string)
 	}
 
 	// revoke the used token immediately before issuing a new one
-	if err := s.Repository.RevokeRefreshToken(ctx, token.ID); err != nil {
+	err = s.Repository.RevokeRefreshToken(ctx, token.ID)
+	if err != nil {
 		return nil, err
 	}
 

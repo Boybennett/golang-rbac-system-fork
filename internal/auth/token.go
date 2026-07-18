@@ -20,17 +20,18 @@ var (
 
 // claims inserted in a short lived access token
 type AccessTokenClaims struct {
+	jwt.RegisteredClaims
 	UserID uuid.UUID `json:"uuid"`
 	Role   string    `json:"role"`
-	jwt.RegisteredClaims
 }
 
 // JWTConfig holds all config required to issue and validate tokesn
 type JWTConfig struct {
-	AccessSecret    string
+	AccessSecret string
+	Issuer       string
+
 	AccessTokenTTL  time.Duration // 20 mins
 	RefreshTokenTTL time.Duration // 7 days
-	Issuer          string
 }
 
 type JWTUtil struct {
@@ -57,7 +58,7 @@ func NewJWTUtil(cfg JWTConfig) (*JWTUtil, error) {
 	return &JWTUtil{cfg: cfg}, nil
 }
 
-func (j *JWTUtil) IssueTokenPair(userID uuid.UUID, role string) (access string, refresh string, hash string, err error) {
+func (j *JWTUtil) IssueTokenPair(userID uuid.UUID, role string) (access, refresh, hash string, err error) {
 	access, err = j.GenerateAccessToken(userID, role)
 	if err != nil {
 		return "", "", "", fmt.Errorf("jwt: generate access token: %w", err)
@@ -93,7 +94,7 @@ func (j *JWTUtil) GenerateAccessToken(userID uuid.UUID, role string) (string, er
 	return signed, nil
 }
 
-func (j *JWTUtil) GenerateRefreshToken() (rawToken string, tokenHash string, err error) {
+func (j *JWTUtil) GenerateRefreshToken() (rawToken, tokenHash string, err error) {
 	b := make([]byte, 64)
 	if _, err = rand.Read(b); err != nil {
 		return "", "", fmt.Errorf("jwt: failed to generate refresh token: %w", err)
